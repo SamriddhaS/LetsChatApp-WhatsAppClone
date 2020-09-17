@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="14dp"
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/white"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivShowReqItemDp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/default_profile_image"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_border_width="3dp"
+            app:layout_constraintBottom_toBottomOf="@id/btnShowReqAccept"
+            app:layout_constraintEnd_toStartOf="@+id/tvShowReqItemName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvShowReqItemName" />
+
+        <TextView
+            android:id="@+id/tvShowReqItemName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="User Name"
+            android:textAppearance="@style/TextStyleMedium"
+            app:layout_constraintBottom_toTopOf="@+id/tvShowReqItemAbout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivShowReqItemDp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tvShowReqItemAbout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="User Status"
+            android:textAppearance="@style/TextStyleSmall"
+            app:layout_constraintBottom_toTopOf="@+id/btnShowReqAccept"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivShowReqItemDp"
+            app:layout_constraintTop_toBottomOf="@+id/tvShowReqItemName" />
+
+        <Button
+            android:id="@+id/btnShowReqAccept"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/edt_txt_bg"
+            android:text="Accept"
+            android:textAppearance="@style/TextStyleMedium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnShowReqReject"
+            app:layout_constraintStart_toStartOf="@+id/tvShowReqItemAbout"
+            app:layout_constraintTop_toBottomOf="@+id/tvShowReqItemAbout" />
+
+        <Button
+            android:id="@+id/btnShowReqReject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Reject"
+            android:background="@drawable/btn_bg_1"
+            android:textAppearance="@style/TextStyleMedium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tvShowReqItemAbout"
+            app:layout_constraintStart_toEndOf="@+id/btnShowReqAccept"
+            app:layout_constraintTop_toBottomOf="@+id/tvShowReqItemAbout" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -38,6 +38,9 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
+        setSupportActionBar(settingsToolbar)
+        supportActionBar?.title = "Account Settings"
+
         firebaseAuth = FirebaseAuth.getInstance()
         currentUserId = firebaseAuth?.currentUser?.uid
         firebaseDbRef = FirebaseDatabase.getInstance().reference
@@ -195,7 +198,22 @@ class SettingsActivity : AppCompatActivity() {
                             .apply(glideCustomization)
                             .into(profile_image)
 
-                    } else if (snapshot.exists()
+                    }else if(snapshot.exists()
+                        && !snapshot.hasChild(ALL_USER_KEY_USER_NAME)
+                        && snapshot.hasChild(ALL_USER_KEY_USER_DP)){
+
+                        val oldUserDp = snapshot.child(ALL_USER_KEY_USER_DP).value.toString()
+                        val glideCustomization = RequestOptions()
+                            .placeholder(R.drawable.default_profile_image)
+                            .error(R.drawable.default_profile_image)
+                        Glide
+                            .with(applicationContext)
+                            .load(oldUserDp)
+                            .apply(glideCustomization)
+                            .into(profile_image)
+
+                    }
+                    else if (snapshot.exists()
                         && snapshot.hasChild(ALL_USER_KEY_USER_NAME)
                     ) {
                         val oldUserName = snapshot.child(ALL_USER_KEY_USER_NAME).value.toString()
@@ -230,7 +248,7 @@ class SettingsActivity : AppCompatActivity() {
         if (userAbout.isEmpty())
             userAbout = "Hey I'm Using LetsChat App!!"
 
-        val profileMap = HashMap<String, String>()
+        val profileMap = HashMap<String, Any>()
         profileMap[ALL_USER_KEY_USER_UID] = currentUserId!!
         profileMap[ALL_USER_KEY_USER_NAME] = userName
         profileMap[ALL_USER_KEY_USER_ABOUT] = userAbout
@@ -238,7 +256,7 @@ class SettingsActivity : AppCompatActivity() {
         firebaseDbRef
             ?.child(DATABASE_PATH_NAME_ALL_USERS)
             ?.child(currentUserId!!)
-            ?.setValue(profileMap)
+            ?.updateChildren(profileMap)
             ?.addOnSuccessListener {
                 Toast.makeText(this, "Profile Data Updated", Toast.LENGTH_SHORT).show()
                 gotoMainActivity()

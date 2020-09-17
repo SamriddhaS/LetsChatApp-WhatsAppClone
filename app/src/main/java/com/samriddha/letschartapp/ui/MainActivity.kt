@@ -192,6 +192,7 @@ class MainActivity : AppCompatActivity() {
         val contactsFragment = ContactsFragment()
         val chatsFragment = ChatsFragment()
         val myGroupsFragment = MyGroupsFragment()
+        val requestsFragment = RequestsFragment()
 
         val viewPagerAdapter =
             ViewPagerAdapter(
@@ -199,8 +200,9 @@ class MainActivity : AppCompatActivity() {
                 0
             )
         viewPagerAdapter.addFragment(chatsFragment,"Chats")
-        viewPagerAdapter.addFragment(myGroupsFragment,"MyGroups")
+        viewPagerAdapter.addFragment(myGroupsFragment,"Groups")
         viewPagerAdapter.addFragment(contactsFragment,"Contacts")
+        viewPagerAdapter.addFragment(requestsFragment,"Requests")
 
         viewPager.adapter = viewPagerAdapter
 //
