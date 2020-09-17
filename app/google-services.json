@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "540075733260",
+    "firebase_url": "https://letschartapp.firebaseio.com",
+    "project_id": "letschartapp",
+    "storage_bucket": "letschartapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540075733260:android:dd4149db24b33f3d0bd929",
+        "android_client_info": {
+          "package_name": "com.samriddha.letschartapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540075733260-d0dsappb8mgd2aesi7mgaulh6btip6tk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.samriddha.letschartapp",
+            "certificate_hash": "f0e5243faca4cd775e7332e590e36b9cea1bfc76"
+          }
+        },
+        {
+          "client_id": "540075733260-5dpm69viifq8bfb6u4oetb85mac12kca.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHiV_SixG_XzwkXRKfgUXEBK1DvGiMYWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "540075733260-5dpm69viifq8bfb6u4oetb85mac12kca.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.PhoneLoginActivity">
+
+    <EditText
+        android:id="@+id/etPhLoginNumber"
+        style="@style/TextStyleMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/edt_txt_bg"
+        android:drawableEnd="@drawable/ic_mobile"
+        android:ems="10"
+        android:hint="+Country Code - Mobile Number"
+        android:inputType="phone"
+        android:padding="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/etPhLoginVCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.44"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <EditText
+
+        android:id="@+id/etPhLoginVCode"
+        style="@style/TextStyleMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/edt_txt_bg"
+        android:drawableEnd="@drawable/ic_password"
+        android:ems="10"
+        android:visibility="invisible"
+        android:hint="Enter Verification Code"
+        android:inputType="number"
+        android:padding="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnPhLoginSendCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPhLoginNumber" />
+
+    <Button
+        android:id="@+id/btnPhLoginSendCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edt_txt_bg"
+        android:text="Send Verification Code"
+        android:textAppearance="@style/TextStyleMedium"
+        app:layout_constraintBottom_toTopOf="@+id/btnPhLoginSubmitCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPhLoginVCode" />
+
+    <Button
+        android:id="@+id/btnPhLoginSubmitCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/edt_txt_bg"
+        android:text="Submit And Continue"
+        android:visibility="invisible"
+        android:textAppearance="@style/TextStyleMedium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPhLoginSendCode" />
+
+    <ProgressBar
+        android:id="@+id/phLoginProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#E57373</color>
+    <color name="colorPrimaryDark">#E57373</color>
+    <color name="colorAccent">#26A69A</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <!--  Other Colors  -->
+    <color name="colorBackground">#F8BBD0</color>
+    <color name="colorSecondary">#E573AC</color>
+    <color name="colorSecondary1">#E5AC73</color>
+    <color name="colorSecondary2">#E5E573</color>
+    <color name="colorSecondary3">#91EB8E</color>
+
+
+    <!-- Text View Colors White -->
+    <color name="textColorWhite1">#DEFFFFFF</color>
+    <color name="textColorWhite2">#99FFFFFF</color>
+    <color name="textColorWhite3">#61FFFFFF</color>
+
+
+    <!-- Text View Colors Black -->
+    <color name="textColorBlack1">#DE000000</color>
+    <color name="textColorBlack2">#99000000</color>
+    <color name="textColorBlack3">#61000000</color>
+
+
+    <!-- BackGround Elevations -->
+    <color name="backgroundElevation1dp">#0D91EB8E</color>
+    <color name="backgroundElevation2dp">#1291EB8E</color>
+    <color name="backgroundElevation3dp">#1491EB8E</color>
+    <color name="backgroundElevation4dp">#1791EB8E</color>
+    <color name="backgroundElevation6dp">#1C91EB8E</color>
+    <color name="backgroundElevation8dp">#1F91EB8E</color>
+    <color name="backgroundElevation12dp">#2491EB8E</color>
+    <color name="backgroundElevation16dp">#2691EB8E</color>
+    <color name="backgroundElevation24dp">#2991EB8E</color>
+
+
+</resources>
