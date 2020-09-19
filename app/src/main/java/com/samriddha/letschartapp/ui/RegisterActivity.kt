@@ -3,6 +3,7 @@ package com.samriddha.letschartapp.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -11,6 +12,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_NAME_ALL_USERS
 import com.samriddha.letschartapp.R
+import com.samriddha.letschartapp.others.Constants
+import com.samriddha.letschartapp.others.Constants.KEY_DEVICE_TOKEN
+import com.samriddha.letschartapp.others.MyFirebaseMessagingService
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -55,10 +60,6 @@ class RegisterActivity : AppCompatActivity() {
             ?.addOnSuccessListener {
 
                 createUserDatabase()
-                Toast.makeText(this, "Successfully Created Your Account", Toast.LENGTH_LONG).show()
-                progressBar.visibility = View.GONE
-                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE); //enabling user touch
-                gotoMainActivity()
 
             }?.addOnFailureListener {
 
@@ -74,11 +75,31 @@ class RegisterActivity : AppCompatActivity() {
 
         val currentUserId = firebaseAuth?.currentUser?.uid //Getting current user unique id
 
-        //inserting user in firebase database with user's unique id
+        /*FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+            val token = it.token
+        }*/
+        //Generating a token for this device.
+        val service = MyFirebaseMessagingService()
+        val token = service.getToken(this)
+
         firebaseDbRef
             ?.child(DATABASE_PATH_NAME_ALL_USERS)
             ?.child(currentUserId!!)
-            ?.setValue("")
+            ?.child(KEY_DEVICE_TOKEN)
+            ?.setValue(token)
+            ?.addOnSuccessListener{
+
+                Toast.makeText(this, "Successfully Created Your Account", Toast.LENGTH_LONG).show()
+                progressBar.visibility = View.GONE
+                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE); //enabling user touch
+                gotoMainActivity()
+            }
+            ?.addOnFailureListener {
+                Toast.makeText(this, "Error: ${it.message}", Toast.LENGTH_LONG).show()
+                progressBar.visibility = View.GONE
+                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE); //enabling user touch
+            }
+
     }
 
     private fun gotoLoginActivity(){

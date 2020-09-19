@@ -3,16 +3,25 @@ package com.samriddha.letschartapp.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.samriddha.letschartapp.R
+import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_NAME_ALL_USERS
+import com.samriddha.letschartapp.others.Constants.KEY_DEVICE_TOKEN
+import com.samriddha.letschartapp.others.MyFirebaseMessagingService
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(){
 
     private var firebaseAuth:FirebaseAuth? = null
+    private var firebaseDbRef:DatabaseReference? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         firebaseAuth = FirebaseAuth.getInstance()
+        firebaseDbRef = FirebaseDatabase.getInstance().reference.child(DATABASE_PATH_NAME_ALL_USERS)
 
 
         btnCreateNewAcc.setOnClickListener {
@@ -60,10 +70,33 @@ class LoginActivity : AppCompatActivity() {
         //authenticating user using email and password
         firebaseAuth?.signInWithEmailAndPassword(userEmail,userPassword)?.addOnSuccessListener {
 
-            loginProgressBar.visibility = View.VISIBLE
-            Toast.makeText(this,"Login Successful!!",Toast.LENGTH_SHORT).show()
-            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE); //enabling user touch
-            gotoMainActivity()
+
+            //Generating a token for this device.
+            val currentUserId = firebaseAuth?.currentUser?.uid.toString()
+            /*FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+                val token = it.token
+            }*/
+            val service = MyFirebaseMessagingService()
+            val token = service.getToken(this)
+
+            firebaseDbRef
+                ?.child(currentUserId)
+                ?.child(KEY_DEVICE_TOKEN)
+                ?.setValue(token)
+                ?.addOnSuccessListener {
+
+                    loginProgressBar.visibility = View.VISIBLE
+                    Toast.makeText(this,"Login Successful!!",Toast.LENGTH_SHORT).show()
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                    gotoMainActivity()
+                }
+                ?.addOnFailureListener {
+                    loginProgressBar.visibility = View.GONE
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE); //enabling user touch
+                    Toast.makeText(this,"Invalid User Or Password: ${it.message}",Toast.LENGTH_SHORT).show()
+                }
+
+
 
         }?.addOnFailureListener {
 

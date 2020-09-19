@@ -16,57 +16,61 @@
         android:layout_height="match_parent"
         android:padding="12dp"
         >
+
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivShowUserItemDp"
+            android:id="@+id/ivChatsItemDp"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="8dp"
             android:src="@drawable/default_profile_image"
             app:civ_border_color="@color/colorPrimary"
             app:civ_border_width="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tvShowUserItemName"
+            app:layout_constraintEnd_toStartOf="@+id/tvChatsItemName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivShowUserItemOnline"
+            android:id="@+id/ivChatsItemOnline"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:src="@color/colorAccent"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/ivShowUserItemDp"
-            app:layout_constraintEnd_toEndOf="@+id/ivShowUserItemDp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivChatsItemDp"
+            app:layout_constraintEnd_toEndOf="@+id/ivChatsItemDp"
             app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="@+id/ivShowUserItemDp"
-            app:layout_constraintTop_toTopOf="@+id/ivShowUserItemDp"
+            app:layout_constraintStart_toStartOf="@+id/ivChatsItemDp"
+            app:layout_constraintTop_toTopOf="@+id/ivChatsItemDp"
             app:layout_constraintVertical_bias="0.9" />
 
         <TextView
-            android:id="@+id/tvShowUserItemName"
+            android:id="@+id/tvChatsItemName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="8dp"
             android:text="User Name"
             android:textAppearance="@style/TextStyleMedium"
-            app:layout_constraintBottom_toTopOf="@+id/tvShowUserItemAbout"
+            app:layout_constraintBottom_toTopOf="@+id/tvChatsItemLast"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ivShowUserItemDp"
-            app:layout_constraintTop_toTopOf="@+id/ivShowUserItemDp" />
+            app:layout_constraintStart_toEndOf="@+id/ivChatsItemDp"
+            app:layout_constraintTop_toTopOf="@+id/ivChatsItemDp" />
 
         <TextView
-            android:id="@+id/tvShowUserItemAbout"
+            android:id="@+id/tvChatsItemLast"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="8dp"
             android:text="User Status"
             android:textAppearance="@style/TextStyleSmall"
-            app:layout_constraintBottom_toBottomOf="@+id/ivShowUserItemDp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivChatsItemDp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ivShowUserItemDp"
-            app:layout_constraintTop_toBottomOf="@+id/tvShowUserItemName" />
+            app:layout_constraintStart_toEndOf="@+id/ivChatsItemDp"
+            app:layout_constraintTop_toBottomOf="@+id/tvChatsItemName" />
 
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>

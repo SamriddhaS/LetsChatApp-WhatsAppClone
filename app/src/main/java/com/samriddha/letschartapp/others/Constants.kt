@@ -7,6 +7,8 @@ object Constants {
     const val DATABASE_PATH_ALL_REQUESTS = "All_Requests" //For saving all the chat/friend request that are send or received
     const val USER_DP_STORAGE_REF_PATH = "ProfileImages" //Folder Name used for saving all the profile images of all the users inside firebaseStorage.
     const val DATABASE_PATH_ALL_CONTACTS = "All_Contacts"
+    const val DATABASE_PATH_ALL_MESSAGES = "All_Messages"
+    const val DATABASE_PATH_NOTIFICATIONS = "Notifications"
 
     const val ALL_USER_KEY_USER_NAME = "name" //Key For saving user's name.
     const val ALL_USER_KEY_USER_UID = "uid" //Key For saving user's uid .
@@ -19,8 +21,10 @@ object Constants {
 
 
     const val KEY_MY_GROUPS_TO_GROUP_CHAT_ACTIVITY = "KEY_MY_GROUPS_TO_GROUP_CHAT_ACTIVITY"
-
     const val KEY_FIND_FRIENDS_TO_USER_PROFILE_ACTIVITY = "KEY_FIND_FRIENDS_TO_USER_PROFILE_ACTIVITY"
+    const val KEY_USER_ID_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY = "KEY_USER_ID_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY"
+    const val KEY_USER_NAME_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY = "KEY_USER_NAME_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY"
+    const val KEY_USER_IMAGE_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY = "KEY_USER_IMAGE_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY"
 
     const val PICK_IMAGE_FROM_GALLERY = 1
 
@@ -43,4 +47,14 @@ object Constants {
     const val ALL_CONTACTS_KEY_CONTACTS = "contacts"
     const val CONTACTS_VALUE_SAVED = "saved"
 
+    const val ALL_MESSAGES_KEY_MSG_TYPE = "type"
+    const val ALL_MESSAGES_KEY_FROM = "from"
+    const val MSG_TYPE_VALUE_TEXT_MESSAGE = "text"
+
+    const val NOTIFICATION_VALUE_NOTIFICATION_TYPE = "request"
+
+
+    //Shared Pref Constants
+    const val SHARED_PREF_NAME = "SHARED_PREF_NAME"
+    const val KEY_DEVICE_TOKEN = "device_token"
 }

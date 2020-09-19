@@ -28,16 +28,27 @@
     <color name="textColorBlack3">#61000000</color>
 
 
-    <!-- BackGround Elevations -->
-    <color name="backgroundElevation1dp">#0D91EB8E</color>
-    <color name="backgroundElevation2dp">#1291EB8E</color>
-    <color name="backgroundElevation3dp">#1491EB8E</color>
-    <color name="backgroundElevation4dp">#1791EB8E</color>
-    <color name="backgroundElevation6dp">#1C91EB8E</color>
-    <color name="backgroundElevation8dp">#1F91EB8E</color>
-    <color name="backgroundElevation12dp">#2491EB8E</color>
-    <color name="backgroundElevation16dp">#2691EB8E</color>
-    <color name="backgroundElevation24dp">#2991EB8E</color>
+    <!-- BackGround Elevations:Color Accent -->
+    <color name="bgColorAccentElv1dp">#0D91EB8E</color>
+    <color name="bgColorAccentElv2dp">#1291EB8E</color>
+    <color name="bgColorAccentElv3dp">#1491EB8E</color>
+    <color name="bgColorAccentElv4dp">#1791EB8E</color>
+    <color name="bgColorAccentElv6dp">#1C91EB8E</color>
+    <color name="bgColorAccentElv8dp">#1F91EB8E</color>
+    <color name="bgColorAccentElv12dp">#2491EB8E</color>
+    <color name="bgColorAccentElv16dp">#2691EB8E</color>
+    <color name="bgColorAccentElv24dp">#2991EB8E</color>
+
+    <!-- BackGround Elevations:Color Primary -->
+    <color name="bgColorPrimaryElv1dp">#0DE57373</color>
+    <color name="bgColorPrimaryElv2dp">#12E57373</color>
+    <color name="bgColorPrimaryElv3dp">#14E57373</color>
+    <color name="bgColorPrimaryElv4dp">#17E57373</color>
+    <color name="bgColorPrimaryElv6dp">#1CE57373</color>
+    <color name="bgColorPrimaryElv8dp">#1FE57373</color>
+    <color name="bgColorPrimaryElv12dp">#24E57373</color>
+    <color name="bgColorPrimaryElv16dp">#26E57373</color>
+    <color name="bgColorPrimaryElv24dp">#29E57373</color>
 
 
 </resources>

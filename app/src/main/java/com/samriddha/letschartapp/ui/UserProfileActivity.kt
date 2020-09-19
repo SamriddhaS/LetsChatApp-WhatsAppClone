@@ -11,6 +11,8 @@ import com.google.firebase.database.*
 import com.samriddha.letschartapp.R
 import com.samriddha.letschartapp.others.Constants
 import com.samriddha.letschartapp.others.Constants.ALL_CONTACTS_KEY_CONTACTS
+import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_FROM
+import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_MSG_TYPE
 import com.samriddha.letschartapp.others.Constants.SEND_REQUEST_KEY_REQ_TYPE
 import com.samriddha.letschartapp.others.Constants.ALL_USER_KEY_USER_ABOUT
 import com.samriddha.letschartapp.others.Constants.ALL_USER_KEY_USER_DP
@@ -19,6 +21,8 @@ import com.samriddha.letschartapp.others.Constants.CONTACTS_VALUE_SAVED
 import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_ALL_CONTACTS
 import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_ALL_REQUESTS
 import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_NAME_ALL_USERS
+import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_NOTIFICATIONS
+import com.samriddha.letschartapp.others.Constants.NOTIFICATION_VALUE_NOTIFICATION_TYPE
 import com.samriddha.letschartapp.others.Constants.SEND_REQUEST_VALUE_FRIENDS
 import com.samriddha.letschartapp.others.Constants.SEND_REQUEST_VALUE_NEW
 import com.samriddha.letschartapp.others.Constants.SEND_REQUEST_VALUE_RECEIVED
@@ -342,9 +346,30 @@ class UserProfileActivity : AppCompatActivity() {
                     .setValue(SEND_REQUEST_VALUE_RECEIVED)
                     .addOnSuccessListener {
 
-                        btnUserProfileSendReq.isEnabled = true
-                        msgCurrentState = SEND_REQUEST_VALUE_SENT
-                        btnUserProfileSendReq.text = "Cancel Request"
+
+                        /////Sending the receiver a notification that he/she has a new request from this current user///////////////
+                        val chatNotificationMap = HashMap<String,String>()
+                        chatNotificationMap[ALL_MESSAGES_KEY_FROM] = senderUserId
+                        chatNotificationMap[ALL_MESSAGES_KEY_MSG_TYPE] = NOTIFICATION_VALUE_NOTIFICATION_TYPE
+
+                        val firebaseDbNotificationRef = firebaseDbRef?.child(DATABASE_PATH_NOTIFICATIONS)
+                        firebaseDbNotificationRef
+                            ?.child(receiverUserId)
+                            ?.push()
+                            ?.setValue(chatNotificationMap)
+                            ?.addOnSuccessListener {
+
+                                btnUserProfileSendReq.isEnabled = true
+                                msgCurrentState = SEND_REQUEST_VALUE_SENT
+                                btnUserProfileSendReq.text = "Cancel Request"
+
+                            }
+                            ?.addOnFailureListener {
+                                Toast.makeText(this,"Error:${it.message.toString()}",Toast.LENGTH_LONG).show()
+                            }
+                        /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
                     }
                     .addOnFailureListener {
                         Toast.makeText(this,"Error:${it.message.toString()}",Toast.LENGTH_LONG).show()

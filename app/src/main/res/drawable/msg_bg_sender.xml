@@ -4,10 +4,10 @@
     >
 
     <solid
-        android:color="@color/bgColorPrimaryElv16dp"/>
+        android:color="@color/bgColorAccentElv16dp"/>
 
     <stroke
-        android:color="@color/colorPrimary"
+        android:color="@color/colorAccent"
         android:width="1dp"/>
 
     <corners

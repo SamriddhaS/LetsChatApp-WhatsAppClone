@@ -19,9 +19,57 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/privateChatToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:title="@string/app_name">
+            android:padding="8dp"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivPrivateChatToolbarDp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/default_profile_image"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="1dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tvPrivateChatToolbarName"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvPrivateChatToolbarName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Son Goku"
+                    android:textAppearance="@style/TextStyleMedium"
+                    app:layout_constraintBottom_toTopOf="@+id/tvPrivateChatToolbarLastSeen"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ivPrivateChatToolbarDp"
+                    app:layout_constraintTop_toTopOf="@+id/ivPrivateChatToolbarDp" />
+
+                <TextView
+                    android:id="@+id/tvPrivateChatToolbarLastSeen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Last Seen"
+                    android:textAppearance="@style/TextStyleSmall"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivPrivateChatToolbarDp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ivPrivateChatToolbarDp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPrivateChatToolbarName" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -44,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/backgroundElevation8dp"
+        android:background="@color/bgColorAccentElv8dp"
         android:hint="Enter Your Text Here"
         android:padding="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,7 +106,7 @@
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_send"
-        android:background="@color/backgroundElevation8dp"
+        android:background="@color/bgColorAccentElv8dp"
         app:layout_constraintBottom_toBottomOf="@+id/etPrivateChat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/etPrivateChat"
