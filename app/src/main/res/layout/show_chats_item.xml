@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="14dp"
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/white"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivShowUserItemDp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="24dp"
+            android:src="@drawable/default_profile_image"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_border_width="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvShowUserItemName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivShowUserItemOnline"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@color/colorAccent"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/ivShowUserItemDp"
+            app:layout_constraintEnd_toEndOf="@+id/ivShowUserItemDp"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="@+id/ivShowUserItemDp"
+            app:layout_constraintTop_toTopOf="@+id/ivShowUserItemDp"
+            app:layout_constraintVertical_bias="0.9" />
+
+        <TextView
+            android:id="@+id/tvShowUserItemName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="User Name"
+            android:textAppearance="@style/TextStyleMedium"
+            app:layout_constraintBottom_toTopOf="@+id/tvShowUserItemAbout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivShowUserItemDp"
+            app:layout_constraintTop_toTopOf="@+id/ivShowUserItemDp" />
+
+        <TextView
+            android:id="@+id/tvShowUserItemAbout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="User Status"
+            android:textAppearance="@style/TextStyleSmall"
+            app:layout_constraintBottom_toBottomOf="@+id/ivShowUserItemDp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivShowUserItemDp"
+            app:layout_constraintTop_toBottomOf="@+id/tvShowUserItemName" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
