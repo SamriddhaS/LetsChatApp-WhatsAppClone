@@ -16,9 +16,16 @@ import com.samriddha.letschartapp.others.Constants.ALL_USER_KEY_USER_NAME
 import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_NAME_ALL_USERS
 import com.samriddha.letschartapp.R
 import com.samriddha.letschartapp.adapters.ViewPagerAdapter
+import com.samriddha.letschartapp.others.Constants.ALL_USER_KEY_USER_STATE
+import com.samriddha.letschartapp.others.Constants.ALL_USER_USER_STATE_KEY_DATE
+import com.samriddha.letschartapp.others.Constants.ALL_USER_USER_STATE_KEY_IS_ONLINE
+import com.samriddha.letschartapp.others.Constants.ALL_USER_USER_STATE_KEY_TIME
 import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_GROUPS
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,7 +55,30 @@ class MainActivity : AppCompatActivity() {
             sendUserToLoginActivity()
         else{
             verifyUser()
+
+            //If the user is verified then we save his state as online so we can show it to other users.
+            updateUserOnlineState(true)
+
         }
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        //When user stops/leaves/minimises the app we save his state again as offline.
+        if (currentUser != null)
+            updateUserOnlineState(false)
+
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        //When user stops/leaves/minimises the app we save his state again as offline.
+        if (currentUser != null)
+            updateUserOnlineState(false)
 
     }
 
@@ -209,6 +239,32 @@ class MainActivity : AppCompatActivity() {
 //        tabLayout.getTabAt(0)?.setIcon(R.drawable.ic_chat_24)
 //        tabLayout.getTabAt(1)?.setIcon(R.drawable.ic_groups)
 //        tabLayout.getTabAt(2)?.setIcon(R.drawable.ic_contacts)
+
+    }
+
+    private fun updateUserOnlineState(isOnline:Boolean){
+
+
+        val calender = Calendar.getInstance()
+
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy")
+        val currentDate = dateFormat.format(calender.time)
+
+        val timeFormat = SimpleDateFormat("hh:mm a")
+        val currentTime = timeFormat.format(calender.time)
+
+
+        val userStateMap = HashMap<String,Any>()
+        userStateMap[ALL_USER_USER_STATE_KEY_TIME] = currentTime
+        userStateMap[ALL_USER_USER_STATE_KEY_DATE] = currentDate
+        userStateMap[ALL_USER_USER_STATE_KEY_IS_ONLINE] = isOnline
+
+        val currentUserId = currentUser?.uid
+        firebaseDbRef
+            ?.child(DATABASE_PATH_NAME_ALL_USERS)
+            ?.child(currentUserId!!)
+            ?.child(ALL_USER_KEY_USER_STATE)
+            ?.updateChildren(userStateMap)
 
     }
 

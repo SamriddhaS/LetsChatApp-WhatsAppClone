@@ -13,8 +13,13 @@ import com.samriddha.letschartapp.adapters.MessagesRecyclerAdapter
 import com.samriddha.letschartapp.models.Messages
 import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_FROM
 import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_MSG_TYPE
+import com.samriddha.letschartapp.others.Constants.ALL_USER_KEY_USER_STATE
+import com.samriddha.letschartapp.others.Constants.ALL_USER_USER_STATE_KEY_DATE
+import com.samriddha.letschartapp.others.Constants.ALL_USER_USER_STATE_KEY_IS_ONLINE
+import com.samriddha.letschartapp.others.Constants.ALL_USER_USER_STATE_KEY_TIME
 import com.samriddha.letschartapp.others.Constants.DATABASE_KEY_MESSAGE
 import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_ALL_MESSAGES
+import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_NAME_ALL_USERS
 import com.samriddha.letschartapp.others.Constants.KEY_USER_ID_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY
 import com.samriddha.letschartapp.others.Constants.KEY_USER_IMAGE_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY
 import com.samriddha.letschartapp.others.Constants.KEY_USER_NAME_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY
@@ -107,6 +112,9 @@ class PrivateChatActivity : AppCompatActivity() {
             .load(userImage)
             .apply(glideCustomization)
             .into(ivPrivateChatToolbarDp)
+
+        displayLastSeen()
+
     }
 
     private fun sendMessage() {
@@ -154,4 +162,32 @@ class PrivateChatActivity : AppCompatActivity() {
                 Toast.makeText(this,"Error:${it.message}",Toast.LENGTH_SHORT).show()
             }
     }
+
+    private fun displayLastSeen() = firebaseDbRef
+        ?.child(DATABASE_PATH_NAME_ALL_USERS)
+        ?.child(receiverUserId)
+        ?.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {}
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if(snapshot.hasChild(ALL_USER_KEY_USER_STATE)){
+
+                    val isOnline = snapshot.child(ALL_USER_KEY_USER_STATE).child(ALL_USER_USER_STATE_KEY_IS_ONLINE).value.toString()
+                    val lastSeenDate = snapshot.child(ALL_USER_KEY_USER_STATE).child(ALL_USER_USER_STATE_KEY_DATE).value.toString()
+                    val lastSeenTime = snapshot.child(ALL_USER_KEY_USER_STATE).child(ALL_USER_USER_STATE_KEY_TIME).value.toString()
+
+                    if(isOnline=="true"){
+                        tvPrivateChatToolbarLastSeen.text = "Online"
+                    }else{
+                        tvPrivateChatToolbarLastSeen.text = "Last Seen:$lastSeenTime,$lastSeenDate"
+                    }
+
+                }else{
+                    tvPrivateChatToolbarLastSeen.text = "Offline"
+                }
+            }
+
+        })
+
 }

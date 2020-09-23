@@ -14,6 +14,10 @@ object Constants {
     const val ALL_USER_KEY_USER_UID = "uid" //Key For saving user's uid .
     const val ALL_USER_KEY_USER_ABOUT = "about" //Key For saving user's about section.
     const val ALL_USER_KEY_USER_DP = "profile_pic" // Key For saving user's profile dp
+    const val ALL_USER_KEY_USER_STATE = "user_state" // Key For saving user's online state
+    const val ALL_USER_USER_STATE_KEY_DATE = "date"
+    const val ALL_USER_USER_STATE_KEY_TIME = "time"
+    const val ALL_USER_USER_STATE_KEY_IS_ONLINE = "isOnline"
 
     const val DATABASE_KEY_MESSAGE = "message" //Key for saving the message that us send by user.
     const val DATABASE_KEY_MSG_DATE = "date" //Key for recording sending date of the message.
