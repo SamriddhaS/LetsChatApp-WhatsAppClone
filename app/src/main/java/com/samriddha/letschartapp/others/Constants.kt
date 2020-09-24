@@ -53,6 +53,12 @@ object Constants {
 
     const val ALL_MESSAGES_KEY_MSG_TYPE = "type"
     const val ALL_MESSAGES_KEY_FROM = "from"
+    const val ALL_MESSAGES_KEY_TO = "to"
+    const val ALL_MESSAGES_KEY_MESSAGE_ID = "message_id"
+    const val ALL_MESSAGES_KEY_MESSAGE_DATE = "message_date"
+    const val ALL_MESSAGES_KEY_MESSAGE_TIME = "message_time"
+    const val ALL_MESSAGES_KEY_ALL_CHATS = "all_chats"
+    const val ALL_MESSAGES_KEY_LAST_MESSAGE = "last_message"
     const val MSG_TYPE_VALUE_TEXT_MESSAGE = "text"
 
     const val NOTIFICATION_VALUE_NOTIFICATION_TYPE = "request"

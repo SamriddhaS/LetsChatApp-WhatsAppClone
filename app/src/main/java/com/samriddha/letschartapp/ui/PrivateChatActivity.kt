@@ -11,8 +11,14 @@ import com.google.firebase.database.*
 import com.samriddha.letschartapp.R
 import com.samriddha.letschartapp.adapters.MessagesRecyclerAdapter
 import com.samriddha.letschartapp.models.Messages
+import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_ALL_CHATS
 import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_FROM
+import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_LAST_MESSAGE
+import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_MESSAGE_DATE
+import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_MESSAGE_ID
+import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_MESSAGE_TIME
 import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_MSG_TYPE
+import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_TO
 import com.samriddha.letschartapp.others.Constants.ALL_USER_KEY_USER_STATE
 import com.samriddha.letschartapp.others.Constants.ALL_USER_USER_STATE_KEY_DATE
 import com.samriddha.letschartapp.others.Constants.ALL_USER_USER_STATE_KEY_IS_ONLINE
@@ -25,6 +31,7 @@ import com.samriddha.letschartapp.others.Constants.KEY_USER_IMAGE_CHAT_FRAGMENT_
 import com.samriddha.letschartapp.others.Constants.KEY_USER_NAME_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY
 import com.samriddha.letschartapp.others.Constants.MSG_TYPE_VALUE_TEXT_MESSAGE
 import kotlinx.android.synthetic.main.activity_private_chat.*
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -54,6 +61,7 @@ class PrivateChatActivity : AppCompatActivity() {
 
         showOldMessages()
 
+
     }
 
     private fun initRecyclerView() {
@@ -71,6 +79,7 @@ class PrivateChatActivity : AppCompatActivity() {
             ?.child(DATABASE_PATH_ALL_MESSAGES)
             ?.child(senderUserId)
             ?.child(receiverUserId)
+            ?.child(ALL_MESSAGES_KEY_ALL_CHATS)
             ?.addChildEventListener(object : ChildEventListener{
                 override fun onCancelled(error: DatabaseError) {
                 }
@@ -131,25 +140,41 @@ class PrivateChatActivity : AppCompatActivity() {
             ?.child(DATABASE_PATH_ALL_MESSAGES)
             ?.child(senderUserId)
             ?.child(receiverUserId)
+            ?.child(ALL_MESSAGES_KEY_ALL_CHATS)
             ?.push()
 
         val messagePushId = userMsgKeyRef?.key
 
+        //getting date and time of the message send time
+        val calender = Calendar.getInstance()
+
+        val dateFormat = SimpleDateFormat("MMM dd")
+        val currentDate = dateFormat.format(calender.time)
+        val timeFormat = SimpleDateFormat("hh:mm a")
+        val currentTime = timeFormat.format(calender.time)
 
         val messageBody = HashMap<String,String>()
-        messageBody[DATABASE_KEY_MESSAGE] = message
+        messageBody[ALL_MESSAGES_KEY_MESSAGE_ID] = messagePushId.toString()
         messageBody[ALL_MESSAGES_KEY_MSG_TYPE] = MSG_TYPE_VALUE_TEXT_MESSAGE
+        messageBody[DATABASE_KEY_MESSAGE] = message
+        messageBody[ALL_MESSAGES_KEY_TO] = receiverUserId
         messageBody[ALL_MESSAGES_KEY_FROM] = senderUserId
+        messageBody[ALL_MESSAGES_KEY_MESSAGE_DATE] = currentDate
+        messageBody[ALL_MESSAGES_KEY_MESSAGE_TIME] = currentTime
 
         /*We want to update both sender and receiver same time so we make two references of database using below variables and put them
         * in a hash map.*/
-        val messageSenderRef = "$DATABASE_PATH_ALL_MESSAGES/$senderUserId/$receiverUserId"
-        val messageReceiverRef = "$DATABASE_PATH_ALL_MESSAGES/$receiverUserId/$senderUserId"
+        val messageSenderRef = "$DATABASE_PATH_ALL_MESSAGES/$senderUserId/$receiverUserId/$ALL_MESSAGES_KEY_ALL_CHATS"
+        val messageReceiverRef = "$DATABASE_PATH_ALL_MESSAGES/$receiverUserId/$senderUserId/$ALL_MESSAGES_KEY_ALL_CHATS"
+        val lastMessageSenderRef = "$DATABASE_PATH_ALL_MESSAGES/$receiverUserId/$senderUserId/$ALL_MESSAGES_KEY_LAST_MESSAGE"
+        val lastMessageReceiverRef = "$DATABASE_PATH_ALL_MESSAGES/$senderUserId/$receiverUserId/$ALL_MESSAGES_KEY_LAST_MESSAGE"
 
         //We want to inset "messageBody" inside both sender and receiver node.So we use an hashMap for updating both nodes at sane time.
         val messageDetails = HashMap<String,Any>()
         messageDetails["$messageSenderRef/$messagePushId"] = messageBody
         messageDetails["$messageReceiverRef/$messagePushId"] = messageBody
+        messageDetails[lastMessageSenderRef] = message
+        messageDetails[lastMessageReceiverRef] = message
 
         /* "messageDetails" has both database references of sender and receiver and messageBody that we want to insert into those nodes*/
         firebaseDbRef

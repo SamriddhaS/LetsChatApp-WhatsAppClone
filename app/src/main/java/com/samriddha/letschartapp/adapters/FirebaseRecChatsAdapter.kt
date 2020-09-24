@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -16,12 +17,12 @@ import com.google.firebase.database.ValueEventListener
 import com.samriddha.letschartapp.R
 import com.samriddha.letschartapp.models.Contacts
 import com.samriddha.letschartapp.others.Constants
+import com.samriddha.letschartapp.others.Constants.ALL_MESSAGES_KEY_LAST_MESSAGE
 import com.samriddha.letschartapp.others.Constants.ALL_USER_KEY_USER_DP
 import com.samriddha.letschartapp.others.Constants.ALL_USER_KEY_USER_NAME
+import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_ALL_MESSAGES
 import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_NAME_ALL_USERS
-import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.show_chats_item.view.*
-import kotlinx.android.synthetic.main.show_users_item.view.*
 
 class FirebaseRecChatsAdapter(
     options: FirebaseRecyclerOptions<Contacts>
@@ -30,7 +31,8 @@ class FirebaseRecChatsAdapter(
 ) :
     FirebaseRecyclerAdapter<Contacts, FirebaseRecChatsAdapter.FirebaseRecViewHolder>(options) {
 
-    private val firebaseDbAllUsersRef = FirebaseDatabase.getInstance().reference.child(DATABASE_PATH_NAME_ALL_USERS)
+    private val firebaseDbRef = FirebaseDatabase.getInstance().reference
+    private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
 
     private val userNameMap = HashMap<String,String>()
     private val userImageMap = HashMap<String,String>()
@@ -57,8 +59,14 @@ class FirebaseRecChatsAdapter(
 
         val userId = getRef(position).key
 
-        firebaseDbAllUsersRef
+        val firebaseDbAllUserRef = firebaseDbRef.child(DATABASE_PATH_NAME_ALL_USERS)
+        val firebaseDbLastMessagesRef = firebaseDbRef
+            .child(DATABASE_PATH_ALL_MESSAGES)
+            .child(currentUserId!!)
             .child(userId!!)
+
+        firebaseDbAllUserRef
+            .child(userId)
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {}
 
@@ -73,7 +81,6 @@ class FirebaseRecChatsAdapter(
                          userName = snapshot.child(ALL_USER_KEY_USER_NAME).value.toString()
 
                         holder.itemView.tvChatsItemName.text = userName
-                        holder.itemView.tvChatsItemLast.text = "This is the Last Message"
 
                         val glideCustomization = RequestOptions()
                             .placeholder(R.drawable.default_profile_image)
@@ -90,7 +97,6 @@ class FirebaseRecChatsAdapter(
                         userName = snapshot.child(ALL_USER_KEY_USER_NAME).value.toString()
 
                         holder.itemView.tvChatsItemName.text = userName
-                        holder.itemView.tvChatsItemLast.text = "This is the Last Message"
                     }
 
                     userNameMap[userId] = userName
@@ -98,6 +104,20 @@ class FirebaseRecChatsAdapter(
                 }
 
             })
+
+        firebaseDbLastMessagesRef.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(error: DatabaseError){}
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot.exists() && snapshot.child(ALL_MESSAGES_KEY_LAST_MESSAGE).exists() ){
+                    holder.itemView.tvChatsItemLast.text = snapshot.child(ALL_MESSAGES_KEY_LAST_MESSAGE).value.toString()
+                }else{
+                    holder.itemView.tvChatsItemLast.text = "Last Message"
+                }
+            }
+        })
+
+
 
     }
 

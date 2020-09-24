@@ -60,22 +60,30 @@ class MessagesRecyclerAdapter
 
         holder.itemView.apply {
 
-            if (messageType == MSG_TYPE_VALUE_TEXT_MESSAGE){
+            messagesItemReceivedLayoutId.visibility = View.GONE
+            messagesItemSendLayoutId.visibility = View.GONE
 
-                tvMsgItemReceived.visibility = View.INVISIBLE
-                tvMsgItemSent.visibility = View.INVISIBLE
+            if (messageType == MSG_TYPE_VALUE_TEXT_MESSAGE){
 
                 if (messageIsFrom == currentUserID){
 
                     //If the message is from currentUserId that means current user has send a message to someone
+                    messagesItemSendLayoutId.visibility = View.VISIBLE
                     tvMsgItemSent.visibility = View.VISIBLE
+                    tvMsgItemSendDateTime.visibility = View.VISIBLE
+
                     tvMsgItemSent.text = message.message
+                    tvMsgItemSendDateTime.text = "${message.message_date},${message.message_time}"
 
                 }else{
 
                     //If the message is from some other Id that means current user has received a message from someone.
+                    messagesItemReceivedLayoutId.visibility = View.VISIBLE
                     tvMsgItemReceived.visibility = View.VISIBLE
+                    tvMsgItemReceivedDateTime.visibility = View.VISIBLE
+
                     tvMsgItemReceived.text = message.message
+                    tvMsgItemReceivedDateTime.text = "${message.message_date},${message.message_time}"
                 }
 
             }
