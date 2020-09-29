@@ -5,10 +5,12 @@ object Constants {
     const val DATABASE_PATH_NAME_ALL_USERS = "All_Users" //Key used for saving users information inside firebaseDb
     const val DATABASE_PATH_GROUPS = "Groups" //Key used for saving information of all the groups that are created inside firebaseDb
     const val DATABASE_PATH_ALL_REQUESTS = "All_Requests" //For saving all the chat/friend request that are send or received
-    const val USER_DP_STORAGE_REF_PATH = "ProfileImages" //Folder Name used for saving all the profile images of all the users inside firebaseStorage.
     const val DATABASE_PATH_ALL_CONTACTS = "All_Contacts"
     const val DATABASE_PATH_ALL_MESSAGES = "All_Messages"
     const val DATABASE_PATH_NOTIFICATIONS = "Notifications"
+
+    const val USER_DP_STORAGE_REF_PATH = "ProfileImages" //Folder Name used for saving all the profile images of all the users inside firebaseStorage.
+    const val STORAGE_REF_PATH_IMAGE_FILES = "ImageFiles"
 
     const val ALL_USER_KEY_USER_NAME = "name" //Key For saving user's name.
     const val ALL_USER_KEY_USER_UID = "uid" //Key For saving user's uid .
@@ -60,6 +62,7 @@ object Constants {
     const val ALL_MESSAGES_KEY_ALL_CHATS = "all_chats"
     const val ALL_MESSAGES_KEY_LAST_MESSAGE = "last_message"
     const val MSG_TYPE_VALUE_TEXT_MESSAGE = "text"
+    const val MSG_TYPE_VALUE_IMAGE_MESSAGE = "image"
 
     const val NOTIFICATION_VALUE_NOTIFICATION_TYPE = "request"
 

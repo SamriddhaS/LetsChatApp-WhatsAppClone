@@ -64,6 +64,8 @@
             android:layout_marginEnd="8dp"
             android:text="User Status"
             android:textAppearance="@style/TextStyleSmall"
+            android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintBottom_toBottomOf="@+id/ivChatsItemDp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivChatsItemDp"

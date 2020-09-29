@@ -104,8 +104,9 @@
         android:layout_height="0dp"
         android:background="@color/bgColorAccentElv8dp"
         android:contentDescription="Send Message"
-        android:scaleType="fitXY"
         android:src="@drawable/ic_insert_image"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
         app:layout_constraintBottom_toBottomOf="@+id/etPrivateChat"
         app:layout_constraintEnd_toStartOf="@+id/btnSendPrivateChat"
         app:layout_constraintStart_toEndOf="@+id/etPrivateChat"
@@ -123,5 +124,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnPrivateChatImage"
         app:layout_constraintTop_toTopOf="@+id/etPrivateChat" />
+
+    <ProgressBar
+        android:id="@+id/privateChatProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

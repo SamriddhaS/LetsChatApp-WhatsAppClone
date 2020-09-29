@@ -1,13 +1,20 @@
 package com.samriddha.letschartapp.ui
 
+import android.app.Activity
+import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
 import com.samriddha.letschartapp.R
 import com.samriddha.letschartapp.adapters.MessagesRecyclerAdapter
 import com.samriddha.letschartapp.models.Messages
@@ -29,8 +36,12 @@ import com.samriddha.letschartapp.others.Constants.DATABASE_PATH_NAME_ALL_USERS
 import com.samriddha.letschartapp.others.Constants.KEY_USER_ID_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY
 import com.samriddha.letschartapp.others.Constants.KEY_USER_IMAGE_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY
 import com.samriddha.letschartapp.others.Constants.KEY_USER_NAME_CHAT_FRAGMENT_TO_PRIVATE_CHAT_ACTIVITY
+import com.samriddha.letschartapp.others.Constants.MSG_TYPE_VALUE_IMAGE_MESSAGE
 import com.samriddha.letschartapp.others.Constants.MSG_TYPE_VALUE_TEXT_MESSAGE
+import com.samriddha.letschartapp.others.Constants.PICK_IMAGE_FROM_GALLERY
+import com.samriddha.letschartapp.others.Constants.STORAGE_REF_PATH_IMAGE_FILES
 import kotlinx.android.synthetic.main.activity_private_chat.*
+import kotlinx.android.synthetic.main.activity_settings.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -42,6 +53,7 @@ class PrivateChatActivity : AppCompatActivity() {
     private var firebaseDbRef:DatabaseReference? = null
     private var messagesAdapter:MessagesRecyclerAdapter? = null
     private var messagesList = ArrayList<Messages>()
+    private var fileType = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,13 +67,149 @@ class PrivateChatActivity : AppCompatActivity() {
 
         initRecyclerView()
 
+        showOldMessages()
+
         btnSendPrivateChat.setOnClickListener {
             sendMessage()
         }
 
-        showOldMessages()
+        btnPrivateChatImage.setOnClickListener {
+
+            val options = arrayOf("Images","PDF","MS Docs")
+
+            val alertDialog = AlertDialog.Builder(this)
+            alertDialog.setTitle("Select File Format")
+            alertDialog.setItems(options, DialogInterface.OnClickListener { dialog, which ->
+
+                when(which){
+                    0 -> {
+                        fileType = "image"
+                        val intent = Intent()
+                        intent.action = Intent.ACTION_GET_CONTENT
+                        intent.type = "image/*"
+                        intent.putExtra(Intent.EXTRA_TEXT,"Please Select An Image")
+                        startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY)
+                    }
+                    1 -> {
 
 
+                        fileType = "pdf"
+                    }
+                    2 -> {
+
+                        fileType = "docx"
+                    }
+                }
+
+            })
+            alertDialog.show()
+
+        }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_FROM_GALLERY
+            && resultCode == Activity.RESULT_OK
+            && data!=null
+            && data.data != null){
+
+            val fileUri = data.data
+            if (fileType == "image"){
+
+                privateChatProgressBar.visibility = View.VISIBLE
+                window.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                    , WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+                val firebaseStorageRef = FirebaseStorage.getInstance().reference.child(STORAGE_REF_PATH_IMAGE_FILES)
+
+                val userMsgKeyRef = firebaseDbRef
+                    ?.child(DATABASE_PATH_ALL_MESSAGES)
+                    ?.child(senderUserId)
+                    ?.child(receiverUserId)
+                    ?.child(ALL_MESSAGES_KEY_ALL_CHATS)
+                    ?.push()
+
+                //unique key generated for each message
+                val messagePushId = userMsgKeyRef?.key
+
+                val filePath = firebaseStorageRef.child("$messagePushId.jpg")
+                filePath
+                    .putFile(fileUri!!)
+                    .addOnSuccessListener {
+
+                        /*Image is added to firebaseStorage successfully,we get the downloadUrl of that image
+                        * and save it inside fbDatabase under current user profile*/
+                        filePath
+                            .downloadUrl
+                            .addOnSuccessListener {
+
+                                //getting download link of the uploaded image from firebase storage.
+                                val downloadUrl = it.toString()
+
+                                val calender = Calendar.getInstance()
+
+                                val dateFormat = SimpleDateFormat("MMM dd")
+                                val currentDate = dateFormat.format(calender.time)
+                                val timeFormat = SimpleDateFormat("hh:mm a")
+                                val currentTime = timeFormat.format(calender.time)
+
+                                val msgImageBody = HashMap<String,String>()
+                                msgImageBody[ALL_MESSAGES_KEY_MESSAGE_ID] = messagePushId.toString()
+                                msgImageBody[ALL_MESSAGES_KEY_MSG_TYPE] = MSG_TYPE_VALUE_IMAGE_MESSAGE
+                                msgImageBody[DATABASE_KEY_MESSAGE] = downloadUrl
+                                msgImageBody["fileName"] = fileUri.lastPathSegment.toString()
+                                msgImageBody[ALL_MESSAGES_KEY_TO] = receiverUserId
+                                msgImageBody[ALL_MESSAGES_KEY_FROM] = senderUserId
+                                msgImageBody[ALL_MESSAGES_KEY_MESSAGE_DATE] = currentDate
+                                msgImageBody[ALL_MESSAGES_KEY_MESSAGE_TIME] = currentTime
+
+                                /*We want to update both sender and receiver same time so we make two references of database using below variables and put them
+                                * in a hash map.*/
+                                val msgSenderRef = "$DATABASE_PATH_ALL_MESSAGES/$senderUserId/$receiverUserId/$ALL_MESSAGES_KEY_ALL_CHATS"
+                                val msgReceiverRef = "$DATABASE_PATH_ALL_MESSAGES/$receiverUserId/$senderUserId/$ALL_MESSAGES_KEY_ALL_CHATS"
+
+                                val messageDetails = HashMap<String,Any>()
+                                messageDetails["$msgSenderRef/$messagePushId"] = msgImageBody
+                                messageDetails["$msgReceiverRef/$messagePushId"] = msgImageBody
+
+                                firebaseDbRef
+                                    ?.updateChildren(messageDetails)
+                                    ?.addOnSuccessListener {
+                                        Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
+                                        privateChatProgressBar.visibility = View.INVISIBLE
+                                        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                                    }
+                                    ?.addOnFailureListener {
+                                        Toast.makeText(this,"Error:${it.message}",Toast.LENGTH_SHORT).show()
+                                        privateChatProgressBar.visibility = View.INVISIBLE
+                                        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                                    }
+
+
+                            }
+                            .addOnFailureListener {
+                                //If downloading url from firebaseStorage is not successful.
+                                Toast.makeText(this,"Image Url Error:${it.message.toString()}",Toast.LENGTH_LONG).show()
+                                privateChatProgressBar.visibility = View.INVISIBLE
+                                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                            }
+
+                    }
+                    .addOnFailureListener {
+
+                        //If saving image inside firebaseStorage is not successful
+                        Toast.makeText(this,"Storage Error:${it.message.toString()}",Toast.LENGTH_LONG).show()
+                        privateChatProgressBar.visibility = View.INVISIBLE
+                        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+                    }
+            }
+
+        }
     }
 
     private fun initRecyclerView() {
