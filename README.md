@@ -39,3 +39,15 @@ All chats page:
 See send/received request screen:
 
 <img src="screenshots/Screenshot_5.png" width="200">
+
+Login Page:
+
+<img src="screenshots/Screenshot_6.png" width="200">
+
+Register Account Page:
+
+<img src="screenshots/Screenshot_7.png" width="200">
+
+Register Using Mobile No:
+
+<img src="screenshots/Screenshot_8.png" width="200">
